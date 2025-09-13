@@ -5,147 +5,36 @@ import User from "../models/UserModel.js";
 
 const createCourse = async (req, res) => {
   try {
-    const {
-      title,
-      subtitle,
-      description,
-      categoryId,
-      subCategoryId,
-      course_topic,     //array
-      course_languages,  //array
-      subtitle_language, //array
-      level,
-      duration,
-      instructorId,    //array
-      paid,
-      startDate,
-      endDate,
-      actualPrice,
-      discountPrice,
-      schedule,      //array
-      outcomes,      //array
-      faq,           //array
-      thumbnail_url,
-      video_url,
-      subjectId
-    } = req.body;
-
-    if (!categoryId) {
-      return res.status(400).json({ message: "Category Id is required" });
-    }
-    if (!subCategoryId) {
-      return res.status(400).json({ message: "SubCategory Id is required" });
-    }
-    if (!instructorId || instructorId.length === 0) {
-      return res.status(400).json({ message: "Instructor Id is required" });
-    }
-
-    if (
-      !title ||
-      !description ||
-      !course_topic ||
-      course_topic.length === 0 ||
-      !course_languages ||
-      course_languages.length === 0 ||
-      !level ||
-      !duration ||
-      !startDate ||
-      !endDate ||
-      !thumbnail_url ||
-      !video_url
-    ) {
-      return res.status(400).json({ message: "Please fill all required fields" });
-    }
-
-    if (!schedule || !Array.isArray(schedule) || schedule.length === 0) {
-      return res.status(400).json({ message: "Schedule is required and should not be empty" });
-    }
-
-    if (!outcomes || !Array.isArray(outcomes) || outcomes.length === 0) {
-      return res.status(400).json({ message: "Outcomes are required and should not be empty" });
-    }
-
-    if (!faq || !Array.isArray(faq) || faq.length === 0) {
-      return res.status(400).json({ message: "FAQ is required and should not be empty" });
-    }
-    if (!subtitle_language || !Array.isArray(subtitle_language) || subtitle_language.length === 0) {
-      return res.status(400).json({ message: "Subtitle language is required and should not be empty" });
-    }
-    if (!course_languages || !Array.isArray(course_languages) || course_languages.length < 1) {
+    const parsed = courseSchema.safeParse(req.body);
+    if (!parsed.success) {
       return res.status(400).json({
-        message: "At least one course language is required"
-      });
-    }
-    if (!course_topic || !Array.isArray(course_topic) || course_topic.length < 1) {
-      return res.status(400).json({
-        message: "At least one course topic is required"
+        message: parsed.error.errors[0].message,
+        errors: parsed.error.errors,
       });
     }
 
+    const data = parsed.data;
 
-    const category = await Category.findById(categoryId);
-    if (!category) {
-      return res.status(404).json({ message: "Category not found" });
-    }
+    const category = await Category.findById(data.categoryId);
+    if (!category) return res.status(404).json({ message: "Category not found" });
 
-    const subCategory = await SubCategory.findById(subCategoryId);
-    if (!subCategory) {
-      return res.status(404).json({ message: "SubCategory not found" });
-    }
+    const subCategory = await SubCategory.findById(data.subCategoryId);
+    if (!subCategory) return res.status(404).json({ message: "SubCategory not found" });
 
     const instructors = await User.find({
-      _id: { $in: instructorId },
+      _id: { $in: data.instructorId },
       role: "instructor",
     });
-    if (instructors.length !== instructorId.length) {
-      return res.status(404).json({ message: "One or more instructors not found or invalid" });
+    if (instructors.length !== data.instructorId.length) {
+      return res.status(404).json({ message: "One or more instructors not found" });
     }
 
-    if (new Date(startDate) >= new Date(endDate)) {
-      return res.status(400).json({ message: "End date must be after start date" });
+    if (!data.paid) {
+      data.actualPrice = 0;
+      data.discountPrice = 0;
     }
 
-    if (paid) {
-      if (actualPrice == null || discountPrice == null) {
-        return res.status(400).json({
-          message: "Actual price and discount price are required for paid courses",
-        });
-      }
-      if (discountPrice > actualPrice) {
-        return res.status(400).json({
-          message: "Discount price cannot be greater than actual price",
-        });
-      }
-    } else {
-      req.body.actualPrice = 0;
-      req.body.discountPrice = 0;
-    }
-
-
-    const course = new Course({
-      title,
-      subtitle,
-      description,
-      categoryId,
-      subCategoryId,
-      subjectId,
-      course_topic,
-      course_languages,
-      subtitle_language,
-      level,
-      duration,
-      instructorId,
-      paid,
-      startDate,
-      endDate,
-      actualPrice: req.body.actualPrice,
-      discountPrice: req.body.discountPrice,
-      schedule,
-      outcomes,
-      faq,
-      thumbnail_url,
-      video_url
-    });
+    const course = new Course(data);
     await course.save();
 
     res.status(201).json({ message: "Course created successfully", course });

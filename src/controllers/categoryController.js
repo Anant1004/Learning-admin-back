@@ -17,7 +17,7 @@ const createCategory = async (req, res) => {
 
 const getCategories = async (req, res) => {
   try {
-    const categories = await Category.find({}, { name: 1 });
+    const categories = await Category.find({}, { name: 1,description:1 });
     res.json({data:categories});
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -27,7 +27,7 @@ const getCategories = async (req, res) => {
 const getCategoryById = async (req, res) => {
   try {
     const { id } = req.params;
-    const category = await Category.findById({ "_id": id }, { name: 1 });
+    const category = await Category.findById({ "_id": id }, { name: 1,description:1 });
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
@@ -58,7 +58,16 @@ const deleteCategory = async (req, res) => {
     if (!category) {
       return res.status(404).json({ error: "Category not found" });
     }
-    res.json({ message: "Category deleted successfully" });
+    const result = await SubCategory.deleteMany({ categoryId: id });
+    if (result.deletedCount > 0) {
+      return res.json({
+        message: "Category and its subcategories deleted successfully",
+      });
+    } else {
+      return res.json({
+        message: "Category deleted successfully (no subcategories found)",
+      });
+    }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

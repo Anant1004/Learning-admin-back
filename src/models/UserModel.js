@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
-  name: {
+  fullname: {
     type: String,
     required: true,
     lowercase: true,
@@ -14,11 +14,11 @@ const userSchema = new mongoose.Schema({
     lowercase: true,
     trim: true,
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         return /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(v);
       },
-      message: props => `${props.value} is not a valid email!`
-    }
+      message: (props) => `${props.value} is not a valid email!`,
+    },
   },
   phoneNo: {
     type: String,
@@ -26,11 +26,11 @@ const userSchema = new mongoose.Schema({
     required: true,
     trim: true,
     validate: {
-      validator: function(v) {
+      validator: function (v) {
         return /^\+?[1-9]\d{1,14}$/.test(v);
       },
-      message: props => `${props.value} is not a valid phone number!`
-    }
+      message: (props) => `${props.value} is not a valid phone number!`,
+    },
   },
   password: {
     type: String,
@@ -41,22 +41,28 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ["admin", "instructor", "student"],
     required: true,
-    default: "student"
+    default: "student",
   },
   bio: {
     type: String,
-    trim: true
+    trim: true,
+    required: function () {
+      return this.role === "instructor";
+    },
   },
   expertise: {
     type: String,
-    trim: true
+    trim: true,
+    required: function () {
+      return this.role === "instructor";
+    },
   },
   profile_image: {
     type: String,
   },
   created_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
 });
 
