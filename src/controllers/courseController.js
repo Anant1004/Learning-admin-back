@@ -3,9 +3,13 @@ import Category from "../models/CategoryModel.js";
 import SubCategory from "../models/SubCategoryModel.js";
 import User from "../models/UserModel.js";
 import { courseSchema } from "../validators/courseValidator.js";
+import { v2 as cloudinary } from 'cloudinary';
+import cloudinaryConfig from "../config/cloudinaryConfig.js";
+
+cloudinary.config(cloudinaryConfig);
 
 const createCourse = async (req, res) => {
-  console.log("coming !");
+  console.log("Creating course...");
   try {
     const parsed = courseSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -14,9 +18,24 @@ const createCourse = async (req, res) => {
         errors: parsed.error?.errors,
       });
     }
-    console.log("parsed data",parsed.data);
 
     const data = parsed.data;
+    
+    if (data.thumbnail_url) {
+      try {
+        const result = await cloudinary.uploader.upload(data.thumbnail_url, {
+          folder: 'course_thumbnails',
+          resource_type: 'auto'
+        });        
+        data.thumbnail_url = result.secure_url;
+      } catch (uploadError) {
+        console.error('Error uploading thumbnail to Cloudinary:', uploadError);
+        return res.status(500).json({ 
+          message: 'Failed to upload thumbnail',
+          error: uploadError.message 
+        });
+      }
+    }
 
     const category = await Category.findById(data.categoryId);
     if (!category) return res.status(404).json({ message: "Category not found" });
