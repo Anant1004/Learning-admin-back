@@ -2,16 +2,19 @@ import Course from "../models/CourseModel.js";
 import Category from "../models/CategoryModel.js";
 import SubCategory from "../models/SubCategoryModel.js";
 import User from "../models/UserModel.js";
+import { courseSchema } from "../validators/courseValidator.js";
 
 const createCourse = async (req, res) => {
+  console.log("coming !");
   try {
     const parsed = courseSchema.safeParse(req.body);
     if (!parsed.success) {
       return res.status(400).json({
-        message: parsed.error.errors[0].message,
-        errors: parsed.error.errors,
+        message: parsed.error?.message,
+        errors: parsed.error?.errors,
       });
     }
+    console.log("parsed data",parsed.data);
 
     const data = parsed.data;
 
