@@ -11,6 +11,8 @@ import userRoute from "./src/routes/userRoutes.js";
 import chapterRoute from "./src/routes/chapterRoutes.js";
 import liveClassRoute from "./src/routes/liveClassRoutes.js";
 import freeVideoRoute from "./src/routes/freeVideoRoutes.js";
+import lessonRoute from "./src/routes/lessonRoute.js";
+import signatureRoute from "./src/routes/signatureRoute.js";
 
 dotenv.config({
   path: './.env',
@@ -50,6 +52,8 @@ app.use('/api/users',userRoute);
 app.use('/api/chapters',chapterRoute);
 app.use('/api/liveclasses',liveClassRoute);
 app.use('/api/freevideos',freeVideoRoute);
+app.use('/api/lesson',lessonRoute);
+app.use('/api/signature',signatureRoute);
 
 const PORT = process.env.PORT || 5000;
 
