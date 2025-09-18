@@ -5,7 +5,9 @@ import User from "../models/UserModel.js";
 import { courseSchema } from "../validators/courseValidator.js";
 import { v2 as cloudinary } from 'cloudinary';
 import cloudinaryConfig from "../config/cloudinaryConfig.js";
-
+import Chapter from "../models/ChapterModel.js";
+import Lesson from "../models/LessonModel.js";
+import extractPublicId from "../helper/extractPublicId.js";
 cloudinary.config(cloudinaryConfig);
 
 const createCourse = async (req, res) => {
@@ -118,11 +120,43 @@ const updateCourse = async (req, res) => {
 
 const deleteCourse = async (req, res) => {
   try {
-    const course = await Course.findByIdAndDelete(req.params.id);
+    const courseId = req.params.id;
+
+    const course = await Course.findById(courseId);
     if (!course) return res.status(404).json({ message: "Course not found" });
+
+    const chapters = await Chapter.find({ courseId: course._id });
+
+    for (const chapter of chapters) {
+      const lessons = await Lesson.find({ _id: { $in: chapter.lessons || [] } });
+
+      for (const lesson of lessons) {
+        for (const mat of lesson.materials) {
+          if (mat.material_url) {
+            const publicId = extractPublicId(mat.material_url);
+            if (publicId) {
+              await cloudinary.uploader.destroy(publicId);
+            }
+          }
+        }
+
+        await lesson.deleteOne();
+      }
+
+      await chapter.deleteOne();
+    }
+
+    if (course.thumbnail_url) {
+      const publicId = extractPublicId(course.thumbnail_url);
+      if (publicId) await cloudinary.uploader.destroy(publicId);
+    }
+
+    await course.deleteOne();
+
     res.status(200).json({ message: "Course deleted successfully" });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    console.error(error);
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };
 

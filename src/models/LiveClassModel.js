@@ -17,29 +17,31 @@ const liveClassSchema = new mongoose.Schema(
       ref: "Course",
       required: true,
     },
-    subjectId: {
+    chapterId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Subject",
+      ref: "Chapter",
+      required: true,
+    },
+    lessonId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Lesson",
+      required: true,
+    },
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    endDate: {
+      type: Date,
+      required: true,
+    },
+    meet_link: {
+      type: String,
       required: true,
     },
     thumbnail_url: {
       type: String,
       required: true,
-    },
-    meetlink: {
-      type: String,
-      required: true,
-    },
-    schedule_date: {
-      type: Date,
-      required: true,
-    },
-    start_time: {
-      type: String,
-      required: true,
-    },
-    end_time: {
-      type: String,
     },
   },
   { timestamps: true }
