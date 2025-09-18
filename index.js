@@ -16,6 +16,7 @@ import notificationRoutes from "./src/routes/notificationRoute.js";
 import bannerRoutes from "./src/routes/bannerRoute.js";
 import lessonRoute from "./src/routes/lessonRoute.js";
 import signatureRoute from "./src/routes/signatureRoute.js";
+import authRoute from "./src/routes/authRoute.js";
 
 dotenv.config({
   path: './.env',
@@ -60,6 +61,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/banners", bannerRoutes);
 app.use('/api/lesson',lessonRoute);
 app.use('/api/signature',signatureRoute);
+app.use('/api/auth',authRoute)
 
 const PORT = process.env.PORT || 5000;
 
