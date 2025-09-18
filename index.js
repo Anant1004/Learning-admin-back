@@ -13,6 +13,7 @@ import liveClassRoute from "./src/routes/liveClassRoutes.js";
 import freeVideoRoute from "./src/routes/freeVideoRoutes.js";
 import testSeriesRoutes from "./src/routes/testSeriesRoutes.js";
 import notificationRoutes from "./src/routes/notificationRoute.js";
+import bannerRoutes from "./src/routes/bannerRoute.js";
 import lessonRoute from "./src/routes/lessonRoute.js";
 import signatureRoute from "./src/routes/signatureRoute.js";
 
@@ -55,7 +56,8 @@ app.use('/api/chapters',chapterRoute);
 app.use('/api/liveclasses',liveClassRoute);
 app.use('/api/freevideos',freeVideoRoute);
 app.use("/api/testSeries", testSeriesRoutes)
-app.use("/api/notifications", notificationRoutes)
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/banners", bannerRoutes);
 app.use('/api/lesson',lessonRoute);
 app.use('/api/signature',signatureRoute);
 
