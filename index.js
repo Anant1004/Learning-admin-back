@@ -29,7 +29,8 @@ app.get('/', (req, res) => {
 });
 
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:3000'
+  process.env.FRONTEND_URL || 'http://localhost:3000',
+  "https://lms-sys1-infynx.vercel.app"
 ];
 
 app.use(cors({
