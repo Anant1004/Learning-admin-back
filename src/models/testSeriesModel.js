@@ -27,6 +27,14 @@ const testSeriesSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    category: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Category",
+    },
+    subcategory: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Subcategory",
+    },
     startDate: {
         type: Date,
         required: true
