@@ -1,6 +1,9 @@
 import Chapter from "../models/ChapterModel.js";
 import Subject from "../models/SubjectModel.js";
 import Course from "../models/CourseModel.js";
+import extractPublicId from "../helper/extractPublicId.js";
+import cloudinary from "../config/cloudinaryConfig.js";
+import Lesson from "../models/LessonModel.js";
 
 const createChapter = async (req, res) => {
   try {
@@ -140,12 +143,46 @@ const updateChapter = async (req, res) => {
   }
 };
 
+// const deleteChapter = async (req, res) => {
+//   try {
+//     const chapter = await Chapter.findByIdAndDelete(req.params.id);
+//     if (!chapter) return res.status(404).json({ message: "Chapter not found" });
+//     res.status(200).json({ message: "Chapter deleted successfully" });
+//   } catch (error) {
+//     res.status(500).json({ message: error.message });
+//   }
+// };
+
 const deleteChapter = async (req, res) => {
   try {
-    const chapter = await Chapter.findByIdAndDelete(req.params.id);
-    if (!chapter) return res.status(404).json({ message: "Chapter not found" });
-    res.status(200).json({ message: "Chapter deleted successfully" });
+    const chapterId = req.params.id;
+
+    // 1️⃣ Chapter ko fetch karo taki lessons mil sake
+    const chapter = await Chapter.findById(chapterId).populate("lessons");
+    if (!chapter) {
+      return res.status(404).json({ message: "Chapter not found" });
+    }
+
+    for (const lesson of chapter.lessons) {
+      if (lesson.materials && lesson.materials.length > 0) {
+        for (const m of lesson.materials) {
+          if (m.material_url) {
+            const publicId = extractPublicId(m.material_url);
+            if (publicId) await cloudinary.uploader.destroy(publicId);
+          }
+        }
+      }
+
+      await Lesson.findByIdAndDelete(lesson._id);
+    }
+
+    await Chapter.findByIdAndDelete(chapterId);
+
+    res.status(200).json({
+      message: "Chapter is successfully deleted!",
+    });
   } catch (error) {
+    console.error("Delete Chapter Error:", error);
     res.status(500).json({ message: error.message });
   }
 };
