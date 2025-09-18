@@ -1,6 +1,8 @@
 import Lesson from "../models/LessonModel.js";
 import Course from "../models/CourseModel.js";
 import Chapter from "../models/ChapterModel.js"
+import extractPublicId from "../helper/extractPublicId.js";
+import cloudinary from "../config/cloudinaryConfig.js";
 
 // const createLesson = async (req, res) => {
 //     try {
@@ -172,15 +174,39 @@ const updateLesson = async (req, res) => {
 };
 
 const deleteLesson = async (req, res) => {
-    try {
-        const lesson = await Lesson.findByIdAndDelete(req.params.id);
-        if (!lesson) {
-            return res.status(404).json({ success: false, message: "Lesson not found" });
-        }
-        res.json({ success: true, message: "Lesson deleted successfully" });
-    } catch (err) {
-        res.status(500).json({ success: false, message: err.message });
+  try {
+    const lesson = await Lesson.findById(req.params.id);
+    if (!lesson) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Lesson not found" });
     }
+
+    for (const mat of lesson.materials) {
+      let publicId = mat.material_public_id;
+
+      if (!publicId && mat.material_url) {
+        publicId = extractPublicId(mat.material_url);
+      }
+
+      if (publicId) {
+        try {
+          await cloudinary.uploader.destroy(publicId);
+        } catch (err) {
+          console.error("Cloudinary delete error:", err.message);
+        }
+      }
+    }
+    await lesson.deleteOne();
+
+    res.json({
+      success: true,
+      message: "Lesson & related Cloudinary files deleted",
+    });
+  } catch (err) {
+    console.error("DeleteLesson error:", err);
+    res.status(500).json({ success: false, message: err.message });
+  }
 };
 
 export { createLesson, getLessons, getLessonById, updateLesson, deleteLesson }

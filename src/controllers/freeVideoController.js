@@ -54,13 +54,31 @@ const createFreeVideo = async (req, res) => {
 
 
 const getFreeVideos = async (req, res) => {
-    try {
-        const freeVideos = await FreeVideo.find().select("-__v");
-        res.status(200).json(freeVideos);
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-    }
+  try {
+    // total videos ka count
+    const totalVideos = await FreeVideo.countDocuments();
+
+    // published videos ka count
+    const publishedVideos = await FreeVideo.countDocuments({ status: "published" });
+
+    // draft videos ka count
+    const draftVideos = await FreeVideo.countDocuments({ status: "draft" });
+
+    // agar aapko saare videos ka data bhi chahiye
+    const freeVideos = await FreeVideo.find().select("-__v");
+
+    res.status(200).json({
+      freevideos: freeVideos,
+      totalvideo: totalVideos,
+      publishedvideos: publishedVideos,
+      draftvideos: draftVideos
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
+
+
 
 const getFreeVideoById = async (req, res) => {
     try {
