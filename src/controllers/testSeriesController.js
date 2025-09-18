@@ -10,6 +10,8 @@ export const createTestSeries = async (req, res) => {
       duration,
       paid,
       price,
+      category,
+      subcategory,
       startDate,
       endDate,
       totalMarks,
@@ -21,8 +23,7 @@ export const createTestSeries = async (req, res) => {
     if (typeof questions === "string") questions = JSON.parse(questions);
     if (typeof paid === "string") paid = paid === "true";
     if (Array.isArray(totalMarks)) totalMarks = totalMarks[0];
-
-    duration = Number(duration);
+    duration = String(duration);
     price = Number(price);
     totalMarks = Number(totalMarks);
 
@@ -37,11 +38,14 @@ export const createTestSeries = async (req, res) => {
       return res.status(400).json({ message: "At least one question is required" });
     }
 
-    marksPerQuestion = marksPerQuestion || 1;
+    marksPerQuestion = marksPerQuestion ? Number(marksPerQuestion) : 1;
 
     const formattedQuestions = questions.map((q) => ({
       question: q.question,
-      options: q.options.map((opt) => ({ name: opt })),
+      options: q.options.map((opt) => ({
+        name: opt.name || opt,
+        image: opt.image || null,
+      })),
       correctAns: q.correctAns,
     }));
 
@@ -52,6 +56,8 @@ export const createTestSeries = async (req, res) => {
       duration,
       paid,
       price,
+      category,
+      subcategory,
       startDate,
       endDate,
       totalMarks,
@@ -110,6 +116,16 @@ export const getTestSeriesById = async (req, res) => {
     res.status(200).json(testSeries);
   } catch (error) {
     console.error("Error fetching test series by ID:", error);
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+}
+
+export const deleteTestSeries = async (req, res) => {
+  try {
+    const testSeries = await TestSeries.findByIdAndDelete(req.params.id);
+    res.status(200).json(testSeries);
+  } catch (error) {
+    console.error("Error deleting test series:", error);
     res.status(500).json({ message: "Server error", error: error.message });
   }
 }
