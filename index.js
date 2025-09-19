@@ -17,6 +17,7 @@ import bannerRoutes from "./src/routes/bannerRoute.js";
 import lessonRoute from "./src/routes/lessonRoute.js";
 import signatureRoute from "./src/routes/signatureRoute.js";
 import authRoute from "./src/routes/authRoute.js";
+import { authorize } from "./src/middlewares/authorization.js";
 
 dotenv.config({
   path: './.env',
@@ -48,7 +49,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 app.use(morgan('dev'));
 
-
+app.use(authorize)
 app.use('/api/categories', categoryRoute);
 app.use('/api/subcategories', subCategoryRoute);
 app.use('/api/course',courseRoute);

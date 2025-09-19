@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["admin", "instructor", "student"],
+    enum: ["instructor", "student"],
     required: true,
     default: "student",
   },
@@ -60,10 +60,6 @@ const userSchema = new mongoose.Schema({
   profile_image: {
     type: String,
   },
-  created_at: {
-    type: Date,
-    default: Date.now,
-  },
-});
+}, { timestamps: true } );
 
 export default mongoose.models.User || mongoose.model('User', userSchema);
