@@ -26,23 +26,38 @@ export const login = async (req, res) => {
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    res
-      .cookie("token", token, cookieOptions)
-      .status(200)
-      .json({
-        ok: true,
-        message: "Login successful",
-        user: {
-          id: user._id,
-          fullname: user.fullname,
-          email: user.email,
-          phoneNo: user.phoneNo,
-          role: user.role,
-          bio: user.bio,
-          expertise: user.expertise,
-          profile_image: user.profile_image,
-        },
-      });
+    // res
+    //   .cookie("token", token, cookieOptions)
+    //   .status(200)
+    //   .json({
+    //     ok: true,
+    //     message: "Login successful",
+    //     user: {
+    //       id: user._id,
+    //       fullname: user.fullname,
+    //       email: user.email,
+    //       phoneNo: user.phoneNo,
+    //       role: user.role,
+    //       bio: user.bio,
+    //       expertise: user.expertise,
+    //       profile_image: user.profile_image,
+    //     },
+    //   });
+    res.status(200).json({
+      ok: true,
+      message: "Login successful",
+      token: token,
+      user: {
+        id: user._id,
+        fullname: user.fullname,
+        email: user.email,
+        phoneNo: user.phoneNo,
+        role: user.role,
+        bio: user.bio,
+        expertise: user.expertise,
+        profile_image: user.profile_image,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ ok: false, message: "Something went wrong" });
@@ -80,23 +95,38 @@ export const register = async (req, res) => {
 
     const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
 
-    res
-      .cookie("token", token, cookieOptions)
-      .status(201)
-      .json({
-        ok: true,
-        message: "User registered successfully",
-        user: {
-          id: newUser._id,
-          fullname: newUser.fullname,
-          email: newUser.email,
-          phoneNo: newUser.phoneNo,
-          role: newUser.role,
-          bio: newUser.bio,
-          expertise: newUser.expertise,
-          profile_image: newUser.profile_image,
-        },
-      });
+    // res
+    //   .cookie("token", token, cookieOptions)
+    //   .status(201)
+    //   .json({
+    //     ok: true,
+    //     message: "User registered successfully",
+    //     user: {
+    //       id: newUser._id,
+    //       fullname: newUser.fullname,
+    //       email: newUser.email,
+    //       phoneNo: newUser.phoneNo,
+    //       role: newUser.role,
+    //       bio: newUser.bio,
+    //       expertise: newUser.expertise,
+    //       profile_image: newUser.profile_image,
+    //     },
+    //   });
+    res.status(201).json({
+      ok: true,
+      message: "User registered successfully",
+      token: token,
+      user: {
+        id: newUser._id,
+        fullname: newUser.fullname,
+        email: newUser.email,
+        phoneNo: newUser.phoneNo,
+        role: newUser.role,
+        bio: newUser.bio,
+        expertise: newUser.expertise,
+        profile_image: newUser.profile_image,
+      },
+    });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: "Something went wrong" });
