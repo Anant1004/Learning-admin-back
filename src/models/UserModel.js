@@ -60,6 +60,18 @@ const userSchema = new mongoose.Schema({
   profile_image: {
     type: String,
   },
+  purchasedCourses: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Course", 
+    },
+  ],
+  purchasedTestSeries: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "TestSeries", 
+    },
+  ],
 }, { timestamps: true } );
 
 export default mongoose.models.User || mongoose.model('User', userSchema);
