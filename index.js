@@ -45,21 +45,21 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 app.use(morgan('dev'));
 app.use(cookieParser());
-app.use('/api/categories', authorize, categoryRoute);
-app.use('/api/subcategories', authorize, subCategoryRoute);
-app.use('/api/course',authorize,courseRoute);
-app.use('/api/subject',authorize,subjectRoute);
-app.use('/api/users',authorize,userRoute);
-app.use('/api/chapters',authorize,chapterRoute);
-app.use('/api/liveclasses',authorize,liveClassRoute);
-app.use('/api/freevideos',authorize,freeVideoRoute);
-app.use("/api/testSeries", authorize,testSeriesRoutes)
-app.use("/api/notifications", authorize,notificationRoutes);
-app.use("/api/banners", authorize,bannerRoutes);
-app.use('/api/lesson',authorize,lessonRoute);
-app.use('/api/signature',authorize,signatureRoute);
+app.use('/api/categories', categoryRoute);
+app.use('/api/subcategories', subCategoryRoute);
+app.use('/api/course',courseRoute);
+app.use('/api/subject',subjectRoute);
+app.use('/api/users',userRoute);
+app.use('/api/chapters',chapterRoute);
+app.use('/api/liveclasses',liveClassRoute);
+app.use('/api/freevideos',freeVideoRoute);
+app.use("/api/testSeries",testSeriesRoutes)
+app.use("/api/notifications",notificationRoutes);
+app.use("/api/banners", bannerRoutes);
+app.use('/api/lesson',lessonRoute);
+app.use('/api/signature',signatureRoute);
 app.use('/api/auth',authRoute);
-app.use('/api/purchase',authorize,purchaseRoutes);
+app.use('/api/purchase',purchaseRoutes);
 
 const PORT = process.env.PORT || 5000;
 
