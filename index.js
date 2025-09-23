@@ -19,6 +19,7 @@ import signatureRoute from "./src/routes/signatureRoute.js";
 import authRoute from "./src/routes/authRoute.js";
 import { authorize } from "./src/middlewares/authorization.js";
 import cookieParser from "cookie-parser";
+import purchaseRoutes from "./src/routes/purchaseRoutes.js";
 
 dotenv.config({
   path: './.env',
@@ -57,7 +58,8 @@ app.use("/api/notifications", authorize,notificationRoutes);
 app.use("/api/banners", authorize,bannerRoutes);
 app.use('/api/lesson',authorize,lessonRoute);
 app.use('/api/signature',authorize,signatureRoute);
-app.use('/api/auth',authRoute)
+app.use('/api/auth',authRoute);
+app.use('/api/purchase',authorize,purchaseRoutes);
 
 const PORT = process.env.PORT || 5000;
 
