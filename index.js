@@ -33,7 +33,8 @@ app.get('/', (req, res) => {
 
 const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
-  "https://lms-sys1-infynx.vercel.app"
+  "https://lms-sys1-infynx.vercel.app",
+  "http://localhost:8081"
 ];
 
 app.use(cors({
@@ -49,7 +50,7 @@ app.use('/api/categories', authorize, categoryRoute);
 app.use('/api/subcategories', authorize, subCategoryRoute);
 app.use('/api/course',authorize,courseRoute);
 app.use('/api/subject',authorize,subjectRoute);
-app.use('/api/users',authorize,userRoute);
+app.use('/api/users',userRoute);
 app.use('/api/chapters',authorize,chapterRoute);
 app.use('/api/liveclasses',authorize,liveClassRoute);
 app.use('/api/freevideos',authorize,freeVideoRoute);
