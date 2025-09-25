@@ -1,0 +1,193 @@
+{
+  "info": {
+    "_postman_id": "8f2a8f1c-5b0d-4f3a-9b0d-collection",
+    "name": "Updated Coaching Backend API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Postman collection generated from Express routes. Update the baseUrl and auth token in the collection variables."
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "authToken", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"password\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api","auth","login"] }
+          }
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": { "mode": "raw", "raw": "{\n  \"name\": \"User\",\n  \"email\": \"user@example.com\",\n  \"password\": \"password\"\n}" },
+            "url": { "raw": "{{baseUrl}}/api/auth/register", "host": ["{{baseUrl}}"], "path": ["api","auth","register"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Category", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Category 1\"\n}"}, "url": {"raw": "{{baseUrl}}/api/categories", "host": ["{{baseUrl}}"], "path": ["api","categories"]}}},
+        {"name": "Get Categories", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/categories", "host": ["{{baseUrl}}"], "path": ["api","categories"]}}},
+        {"name": "Get Categories with Subcategories", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/categories/with-subcategories", "host": ["{{baseUrl}}"], "path": ["api","categories","with-subcategories"]}}},
+        {"name": "Get Category By Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/categories/:id", "host": ["{{baseUrl}}"], "path": ["api","categories",":id"]}}},
+        {"name": "Update Category", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Category\"\n}"}, "url": {"raw": "{{baseUrl}}/api/categories/:id", "host": ["{{baseUrl}}"], "path": ["api","categories",":id"]}}},
+        {"name": "Delete Category", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/categories/:id", "host": ["{{baseUrl}}"], "path": ["api","categories",":id"]}}}
+      ]
+    },
+    {
+      "name": "Subcategories",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Subcategory", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Subcategory 1\",\n  \"category\": \"<categoryId>\"\n}"}, "url": {"raw": "{{baseUrl}}/api/subcategories", "host": ["{{baseUrl}}"], "path": ["api","subcategories"]}}},
+        {"name": "Get Subcategories", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/subcategories", "host": ["{{baseUrl}}"], "path": ["api","subcategories"]}}},
+        {"name": "Get Subcategory By Category", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/subcategories/:id", "host": ["{{baseUrl}}"], "path": ["api","subcategories",":id"]}}},
+        {"name": "Update Subcategory", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Subcategory\"\n}"}, "url": {"raw": "{{baseUrl}}/api/subcategories/:id", "host": ["{{baseUrl}}"], "path": ["api","subcategories",":id"]}}},
+        {"name": "Delete Subcategory", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/subcategories/:id", "host": ["{{baseUrl}}"], "path": ["api","subcategories",":id"]}}}
+      ]
+    },
+    {
+      "name": "Courses",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Course", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"title\": \"Course 1\"\n}"}, "url": {"raw": "{{baseUrl}}/api/course", "host": ["{{baseUrl}}"], "path": ["api","course"]}}},
+        {"name": "Get Courses", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/course", "host": ["{{baseUrl}}"], "path": ["api","course"]}}},
+        {"name": "Get Course By Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/course/:id", "host": ["{{baseUrl}}"], "path": ["api","course",":id"]}}},
+        {"name": "Update Course", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"title\": \"Updated Course\"\n}"}, "url": {"raw": "{{baseUrl}}/api/course/:id", "host": ["{{baseUrl}}"], "path": ["api","course",":id"]}}},
+        {"name": "Delete Course", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/course/:id", "host": ["{{baseUrl}}"], "path": ["api","course",":id"]}}}
+      ]
+    },
+    {
+      "name": "Subjects",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Subject", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Subject 1\"\n}"}, "url": {"raw": "{{baseUrl}}/api/subject", "host": ["{{baseUrl}}"], "path": ["api","subject"]}}},
+        {"name": "Get Subjects", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/subject", "host": ["{{baseUrl}}"], "path": ["api","subject"]}}},
+        {"name": "Get Subject By Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/subject/:id", "host": ["{{baseUrl}}"], "path": ["api","subject",":id"]}}},
+        {"name": "Update Subject", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"name\": \"Updated Subject\"\n}"}, "url": {"raw": "{{baseUrl}}/api/subject/:id", "host": ["{{baseUrl}}"], "path": ["api","subject",":id"]}}},
+        {"name": "Delete Subject", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/subject/:id", "host": ["{{baseUrl}}"], "path": ["api","subject",":id"]}}}
+      ]
+    },
+    {
+      "name": "Users",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create User (multipart)", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "multipart/form-data"}], "url": {"raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api","users"]}}},
+        {"name": "Get Users", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/users", "host": ["{{baseUrl}}"], "path": ["api","users"]}}},
+        {"name": "Get User By Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"]}}},
+        {"name": "Update User", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"]}}},
+        {"name": "Delete User", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/users/:id", "host": ["{{baseUrl}}"], "path": ["api","users",":id"]}}}
+      ]
+    },
+    {
+      "name": "Chapters",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Chapter", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"title\": \"Chapter 1\",\n  \"courseId\": \"<courseId>\"\n}"}, "url": {"raw": "{{baseUrl}}/api/chapters", "host": ["{{baseUrl}}"], "path": ["api","chapters"]}}},
+        {"name": "Get Chapters", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/chapters", "host": ["{{baseUrl}}"], "path": ["api","chapters"]}}},
+        {"name": "Get Chapter By Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/chapters/:id", "host": ["{{baseUrl}}"], "path": ["api","chapters",":id"]}}},
+        {"name": "Get Chapters By Course Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/chapters/:courseId/bycourseid", "host": ["{{baseUrl}}"], "path": ["api","chapters",":courseId","bycourseid"]}}},
+        {"name": "Update Chapter", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{\n  \"title\": \"Updated Chapter\"\n}"}, "url": {"raw": "{{baseUrl}}/api/chapters/:id", "host": ["{{baseUrl}}"], "path": ["api","chapters",":id"]}}},
+        {"name": "Delete Chapter", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/chapters/:id", "host": ["{{baseUrl}}"], "path": ["api","chapters",":id"]}}}
+      ]
+    },
+    {
+      "name": "Live Classes",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Live Class", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/liveclasses", "host": ["{{baseUrl}}"], "path": ["api","liveclasses"]}}},
+        {"name": "Get Live Classes", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/liveclasses", "host": ["{{baseUrl}}"], "path": ["api","liveclasses"]}}},
+        {"name": "Get Live Class By Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/liveclasses/:id", "host": ["{{baseUrl}}"], "path": ["api","liveclasses",":id"]}}},
+        {"name": "Update Live Class", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/liveclasses/:id", "host": ["{{baseUrl}}"], "path": ["api","liveclasses",":id"]}}},
+        {"name": "Delete Live Class", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/liveclasses/:id", "host": ["{{baseUrl}}"], "path": ["api","liveclasses",":id"]}}}
+      ]
+    },
+    {
+      "name": "Free Videos",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Free Video", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/freevideos", "host": ["{{baseUrl}}"], "path": ["api","freevideos"]}}},
+        {"name": "Get Free Videos", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/freevideos", "host": ["{{baseUrl}}"], "path": ["api","freevideos"]}}},
+        {"name": "Get Free Video By Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/freevideos/:id", "host": ["{{baseUrl}}"], "path": ["api","freevideos",":id"]}}},
+        {"name": "Update Free Video", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/freevideos/:id", "host": ["{{baseUrl}}"], "path": ["api","freevideos",":id"]}}},
+        {"name": "Delete Free Video", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/freevideos/:id", "host": ["{{baseUrl}}"], "path": ["api","freevideos",":id"]}}}
+      ]
+    },
+    {
+      "name": "Test Series",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Test Series", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/testSeries", "host": ["{{baseUrl}}"], "path": ["api","testSeries"]}}},
+        {"name": "Get Test Series", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/testSeries", "host": ["{{baseUrl}}"], "path": ["api","testSeries"]}}},
+        {"name": "Get Test Series By Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/testSeries/:id", "host": ["{{baseUrl}}"], "path": ["api","testSeries",":id"]}}},
+        {"name": "Delete Test Series", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/testSeries/:id", "host": ["{{baseUrl}}"], "path": ["api","testSeries",":id"]}}},
+        {"name": "Upload Test Series PDF (multipart)", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "multipart/form-data"}], "url": {"raw": "{{baseUrl}}/api/testSeries/uploadPDFfile", "host": ["{{baseUrl}}"], "path": ["api","testSeries","uploadPDFfile"]}}}
+      ]
+    },
+    {
+      "name": "Notifications",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Notification", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/notifications", "host": ["{{baseUrl}}"], "path": ["api","notifications"]}}},
+        {"name": "Get Notifications", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/notifications", "host": ["{{baseUrl}}"], "path": ["api","notifications"]}}},
+        {"name": "Get Notification By Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/notifications/:id", "host": ["{{baseUrl}}"], "path": ["api","notifications",":id"]}}},
+        {"name": "Mark As Read", "request": {"method": "PUT", "url": {"raw": "{{baseUrl}}/api/notifications/:id/read", "host": ["{{baseUrl}}"], "path": ["api","notifications",":id","read"]}}},
+        {"name": "Delete Notification", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/notifications/:id", "host": ["{{baseUrl}}"], "path": ["api","notifications",":id"]}}}
+      ]
+    },
+    {
+      "name": "Banners",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Save Banner (multipart)", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "multipart/form-data"}], "url": {"raw": "{{baseUrl}}/api/banners/save", "host": ["{{baseUrl}}"], "path": ["api","banners","save"]}}},
+        {"name": "Get Banners", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/banners", "host": ["{{baseUrl}}"], "path": ["api","banners"]}}},
+        {"name": "Get Banner By Type", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/banners/:type", "host": ["{{baseUrl}}"], "path": ["api","banners",":type"]}}},
+        {"name": "Delete Banner", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/banners/:type/:bannerId", "host": ["{{baseUrl}}"], "path": ["api","banners",":type",":bannerId"]}}}
+      ]
+    },
+    {
+      "name": "Lessons",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Lesson", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/lesson", "host": ["{{baseUrl}}"], "path": ["api","lesson"]}}},
+        {"name": "Get Lessons", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/lesson", "host": ["{{baseUrl}}"], "path": ["api","lesson"]}}},
+        {"name": "Get Lesson By Id", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/lesson/:id", "host": ["{{baseUrl}}"], "path": ["api","lesson",":id"]}}},
+        {"name": "Update Lesson", "request": {"method": "PUT", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/lesson/:id", "host": ["{{baseUrl}}"], "path": ["api","lesson",":id"]}}},
+        {"name": "Delete Lesson", "request": {"method": "DELETE", "url": {"raw": "{{baseUrl}}/api/lesson/:id", "host": ["{{baseUrl}}"], "path": ["api","lesson",":id"]}}}
+      ]
+    },
+    {
+      "name": "Signature",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Generate Signature", "request": {"method": "GET", "url": {"raw": "{{baseUrl}}/api/signature", "host": ["{{baseUrl}}"], "path": ["api","signature"]}}},
+        {"name": "Delete Material", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/signature", "host": ["{{baseUrl}}"], "path": ["api","signature"]}}}
+      ]
+    },
+    {
+      "name": "Purchase",
+      "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{authToken}}", "type": "string" }] },
+      "item": [
+        {"name": "Create Course Order", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/purchase/create/course-order", "host": ["{{baseUrl}}"], "path": ["api","purchase","create","course-order"]}}},
+        {"name": "Create Test Series Order", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/purchase/create/test-series-order", "host": ["{{baseUrl}}"], "path": ["api","purchase","create","test-series-order"]}}},
+        {"name": "Verify Payment", "request": {"method": "POST", "header": [{"key": "Content-Type", "value": "application/json"}], "body": {"mode": "raw", "raw": "{}"}, "url": {"raw": "{{baseUrl}}/api/purchase/verify-payment", "host": ["{{baseUrl}}"], "path": ["api","purchase","verify-payment"]}}}
+      ]
+    }
+  ]
+}
+
+

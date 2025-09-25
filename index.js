@@ -60,7 +60,7 @@ app.use("/api/banners", authorize,bannerRoutes);
 app.use('/api/lesson',authorize,lessonRoute);
 app.use('/api/signature',authorize,signatureRoute);
 app.use('/api/auth',authRoute);
-app.use('/api/purchase',authorize,purchaseRoutes);
+app.use('/api/purchase',purchaseRoutes);
 
 const PORT = process.env.PORT || 5000;
 
