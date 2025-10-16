@@ -46,7 +46,7 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '5mb' }));
 app.use(morgan('dev'));
 app.use(cookieParser());
-app.use('/api/categories', authorize, categoryRoute);
+app.use('/api/categories', categoryRoute);
 app.use('/api/subcategories', authorize, subCategoryRoute);
 app.use('/api/course',authorize,courseRoute);
 app.use('/api/subject',authorize,subjectRoute);
@@ -55,7 +55,7 @@ app.use('/api/chapters',authorize,chapterRoute);
 app.use('/api/liveclasses',authorize,liveClassRoute);
 app.use('/api/freevideos',authorize,freeVideoRoute);
 app.use("/api/testSeries", authorize,testSeriesRoutes)
-app.use("/api/notifications", authorize,notificationRoutes);
+app.use("/api/notifications", notificationRoutes);
 app.use("/api/banners", authorize,bannerRoutes);
 app.use('/api/lesson',authorize,lessonRoute);
 app.use('/api/signature',authorize,signatureRoute);
