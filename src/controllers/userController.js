@@ -1,6 +1,7 @@
 import User from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import uploadOnCloudinary from "../utils/media/uploadImage.js";
+import jwt from "jsonwebtoken";
 
 const createUser = async (req, res) => {
   console.log(req.file);
@@ -52,6 +53,63 @@ const createUser = async (req, res) => {
     });
   } catch (error) {
     return res.status(500).json({ message: "Something went wrong on server", error: error.message });
+  }
+};
+
+const loginUser = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ ok: false, message: "Email and password are required" });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({ ok: false, message: "Invalid email or password" });
+    }
+
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ ok: false, message: "Invalid email or password" });
+    }
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+
+    // res
+    //   .cookie("token", token, cookieOptions)
+    //   .status(200)
+    //   .json({
+    //     ok: true,
+    //     message: "Login successful",
+    //     user: {
+    //       id: user._id,
+    //       fullname: user.fullname,
+    //       email: user.email,
+    //       phoneNo: user.phoneNo,
+    //       role: user.role,
+    //       bio: user.bio,
+    //       expertise: user.expertise,
+    //       profile_image: user.profile_image,
+    //     },
+    //   });
+    res.status(200).json({
+      ok: true,
+      message: "Login successful",
+      token: token,
+      user: {
+        id: user._id,
+        fullname: user.fullname,
+        email: user.email,
+        phoneNo: user.phoneNo,
+        role: user.role,
+        bio: user.bio,
+        expertise: user.expertise,
+        profile_image: user.profile_image,
+      },
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ ok: false, message: "Something went wrong" });
   }
 };
 
@@ -127,4 +185,4 @@ const deleteUser = async (req, res) => {
   }
 };
 
-export { createUser, getUsers, getUserById, updateUser, deleteUser };
+export { createUser, getUsers, getUserById, updateUser, deleteUser,loginUser };
