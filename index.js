@@ -36,7 +36,7 @@ const allowedOrigins = [
   process.env.FRONTEND_URL || 'http://localhost:3000',
   "https://lms-sys1-infynx.vercel.app",
   "http://localhost:8081",
-  "https://learning-admin-panel.vercel.app/"
+  "https://learning-admin-panel.vercel.app"
 ];
 
 app.use(cors({
