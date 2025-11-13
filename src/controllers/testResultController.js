@@ -59,4 +59,18 @@ const getTestResultByTestId = async (req, res) => {
   }
 };
 
-export { createTestResult, getAllTestResults, getTestResultById, getTestResultByTestId };
+const getTestResultByUserId = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const results = await TestResult.find({ userId }).populate("testSeriesId").populate("userId");
+    if (!results) {
+      return res.status(404).json({ success: false, message: "Results not found" });
+    }
+    res.status(200).json({ success: true, results });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Failed to fetch results" });
+  }
+};
+
+export { createTestResult, getAllTestResults, getTestResultById, getTestResultByTestId, getTestResultByUserId };
